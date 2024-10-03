@@ -5,25 +5,26 @@ abstract type MyAbstractGraphSearchAlgorithm end
 
 mutable struct MyGraphNodeModel <: MyAbstractGraphNodeModel
    
-    # data -
-    id::Int64
+   # data -
+   id::Int64
+   capacity::Union{Nothing, Tuple{Int64, Int64}}; # node capacity {MaxInDegree, MaxOutDegree}
  
-    # constructor -
-    MyGraphNodeModel(id::Int64) = new(id);
+   # constructor -
+   MyGraphNodeModel(id::Int64, capacity::Union{Nothing, Int64}) = new(id, capacity);
  end
  
  mutable struct MyGraphEdgeModel <: MyAbstractGraphEdgeModel
     
-    # data -
-    id::Int64
-    source::Int64
-    target::Int64
-    cost::Union{Nothing, Float64}; # this is a little fancy??
-    lower_bound_capacity::Union{Nothing, Float64}; # this is a little fancy??
-    upper_bound_capacity::Union{Nothing, Float64}; # this is a little fancy??
+   # data -
+   id::Int64
+   source::Int64
+   target::Int64
+   cost::Union{Nothing, Float64}; # this is a little fancy??
+   lower_bound_capacity::Union{Nothing, Float64}; # this is a little fancy??
+   upper_bound_capacity::Union{Nothing, Float64}; # this is a little fancy??
  
-    # constructor -
-    MyGraphEdgeModel() = new();
+   # constructor -
+   MyGraphEdgeModel() = new();
  end
  
  mutable struct MySimpleDirectedGraphModel <: MyAbstractGraphModel

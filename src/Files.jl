@@ -1,5 +1,15 @@
 """
     function readnodesfile(filepath::String; comment::Char='#', delim::Char=',') -> Dict{Int64, MyGraphNodeModel}
+
+The function reads a file containing edge list information and returns a dictionary of node models.
+
+### Arguments
+- `filepath::String`: the path to the file containing the edge list information.
+- `comment::Char`: the character that indicates a comment line in the file.
+- `delim::Char`: the character that separates the fields in the file.
+
+### Returns
+- a dictionary of edge models. The key is the edge id, and the value is a `MyGraphEdgeModel` instance.
 """
 function readedgesfile(filepath::String; comment::Char='#', 
     delim::Char=',')::Dict{Int64, MyGraphEdgeModel}
@@ -33,4 +43,31 @@ function readedgesfile(filepath::String; comment::Char='#',
 
     # return -
     return edges;
+end
+
+function readnodecapacityfile(filepath::String; comment::Char='#', 
+    delim::Char=',')::Dict{Int64, Tuple{Int64, Int64}}
+
+    # initialize
+    capacities = Dict{Int64,Tuple{Int64,Int64}}()
+    
+    # main -
+    open(filepath, "r") do file # open a stream to the file
+        for line ∈ eachline(file) # process each line in a file, one at a time
+            
+            # check: do we have comments?
+            if (contains(line, comment) == true) || (isempty(line) == true)
+                continue; # skip this line, and move to the next one
+            end
+            
+            # split the line around the delimiter -
+            parts = split(line, delim) .|> String
+            
+            # build the edge model -
+            capacities[parse(Int64, parts[1])] = (parse(Int64, parts[2]), parse(Int64, parts[3]));
+        end
+    end
+
+    # return -
+    return capacities;
 end
