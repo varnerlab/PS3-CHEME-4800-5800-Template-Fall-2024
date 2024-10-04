@@ -1,11 +1,9 @@
 # Problem Set 3 (PS3): Modified Bellman-Ford Algorithm for Single-Source Shortest Paths with Node Capacities
 This problem set will introduce [the Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) for finding the shortest path from a single source vertex to all other vertices in a weighted graph. 
-It is an extension of `Lab-6d` in which we introduce node capacities.
-
-The [Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) is a graph search algorithm that can search graphs with negative edge weights. However, it is slower than Dijkstra's algorithm. Bellman-Ford has a time complexity of $\mathcal{O}(|\mathcal{V}|\cdot|\mathcal{E}|)$, where $|\mathcal{V}|$ is the number of vertices and $|\mathcal{E}|$ is the number of edges in the graph.
+It is an extension of `Lab-6d` in which we introduce node capacities. The [Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) is a graph search algorithm that can search graphs with negative edge weights. However, it is slower than Dijkstra's algorithm. Bellman-Ford has a time complexity of $\mathcal{O}(|\mathcal{V}|\cdot|\mathcal{E}|)$, where $|\mathcal{V}|$ is the number of vertices and $|\mathcal{E}|$ is the number of edges in the graph.
 
 ## Problem: Update your Bellman-Ford to consider Node Capacities
-Update [your initial Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) to find the shortest path from a single source vertex to all other vertices in a weighted graph where we consider node capacities.
+Update [your initial Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) from `Lab-6d` to find the shortest path from a single source vertex to all other vertices in a weighted graph where we consider node capacities.
 
 <div>
     <center>
@@ -15,7 +13,7 @@ Update [your initial Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellm
 
 Imagine you (node `1`) are in charge of allocating workers to tasks, i.e., faculty to courses. You have a list of faculty and a list of courses. While each faculty member can teach any course, they have a preference for each course reflected in the edge weight connecting faculty to classes. 
 * The weight of the edge connecting faculty `i` to course `j` is the cost of assigning faculty `i` to course `j.` If $w_{ij} < 0$, it means that faculty `i` prefers course `j`. If $w_{ij} > 0$, it means that faculty `i` dislikes course `j`. If $w_{ij} = 0$, it means that faculty `i` is indifferent to course `j.`
-* Node capacities: each faculty member can be assigned from `0` upto a maximum of `N` courses. This value is specified in the `data/Bipartite.nodecapacity` file.
+* __What are node capacities__?: Each faculty member can be assigned from `0` upto a maximum of `N` courses. This value is specified in the `data/Bipartite.nodecapacity` file. Thus, if `N = 1`, then the faculty member can at most be assigned `1` course.
 
 ### Tasks
 1. Implement the `readnodecapacityfile(filepath::String; comment::Char='#', 
