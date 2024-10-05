@@ -23,11 +23,9 @@ by introducing constraints on the in-degree and out-degree of each node in the b
 
 #### Helpful Stuff (maybe)
 We've updated the `MySimpleDirectedGraphModel` type to include an additional field `A::Array{Float64,2}` which is an $|\mathcal{V}|\times|\mathcal{E}|$ array holding connectivity of the graph, where:
-
 * If $a_{ij} = 0$, node `i` is not connected to edge `j`.
 * If $a_{ij} = 1$, node `i` is connected to edge `j`, the edge `j` is an incoming edge for node `i`.
 * If $a_{ij} = -1$, node `i` is connected to edge `j`, the edge `j` is an outgoing edge for node `i`.
-
 In addition, we've added the `capacity::Union{Nothing, Tuple{Int64, Int64}}` field to the `MyGraphNodeModel` type to store the node capacities. The first element of the tuple is the in-degree capacity, and the second element is the out-degree capacity.
 
 ## Test your modified Bellman-Ford implementation
