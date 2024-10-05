@@ -111,6 +111,10 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::BellmanFordAlgori
     return distances, previous;
 end
 
+function _search(graph::T, start::MyGraphNodeModel, algorithm::ModifiedBellmanFordAlgorithm) where T <: MyAbstractGraphModel
+    throw("ModifiedBellmanFordAlgorithm not implemented");
+end
+
 
 # ------ PUBLIC METHODS BELOW HERE -------------------------------------------------------------------------------- #
 """

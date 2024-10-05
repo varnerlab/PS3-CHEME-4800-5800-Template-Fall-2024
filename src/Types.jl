@@ -5,12 +5,12 @@ abstract type MyAbstractGraphSearchAlgorithm end
 
 mutable struct MyGraphNodeModel <: MyAbstractGraphNodeModel
    
-   # data -
-   id::Int64
-   capacity::Union{Nothing, Tuple{Int64, Int64}}; # node capacity {MaxInDegree, MaxOutDegree}
+  # data -
+  id::Int64
+  capacity::Union{Nothing, Tuple{Int64, Int64}}; # node capacity {MaxInDegree, MaxOutDegree}
  
-   # constructor -
-   MyGraphNodeModel(id::Int64, capacity::Union{Nothing, Int64}) = new(id, capacity);
+  # constructor -
+  MyGraphNodeModel(id::Int64, capacity::Union{Nothing, Int64}) = new(id, capacity);
  end
  
  mutable struct MyGraphEdgeModel <: MyAbstractGraphEdgeModel
@@ -47,4 +47,8 @@ end
 
 struct BellmanFordAlgorithm <: MyAbstractGraphSearchAlgorithm
    BellmanFordAlgorithm() = new();
+end
+
+struct ModifiedBellmanFordAlgorithm <: MyAbstractGraphSearchAlgorithm
+  ModifiedBellmanFordAlgorithm() = new();
 end

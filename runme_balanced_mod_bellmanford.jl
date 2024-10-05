@@ -8,7 +8,7 @@ balanced_graphmodel = readedgesfile(balanced_edgefile) |> edges -> build(MySimpl
 nodecapacities = readnodecapacityfile(balanced_nodecapacityfile);
 
 # run the Bellman Ford Algorithm algorithm -
-(d,p) = computeshortestpaths(balanced_graphmodel, balanced_graphmodel.nodes[1], BellmanFordAlgorithm());
+(d,p) = computeshortestpaths(balanced_graphmodel, balanced_graphmodel.nodes[1], ModifiedBellmanFordAlgorithm());
 
 # compute flow vector -
 f = flow(balanced_graphmodel, d, p);

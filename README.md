@@ -1,9 +1,9 @@
 # Problem Set 3 (PS3): Modified Bellman-Ford Algorithm for Single-Source Shortest Paths with Node Capacities
 This problem set will introduce [the Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) for finding the shortest path from a single source vertex to all other vertices in a weighted graph. 
-It is an extension of `Lab-6d` in which we introduce node capacities. The [Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) is a graph search algorithm that can search graphs with negative edge weights. However, it is slower than Dijkstra's algorithm. Bellman-Ford has a time complexity of $\mathcal{O}(|\mathcal{V}|\cdot|\mathcal{E}|)$, where $|\mathcal{V}|$ is the number of vertices and $|\mathcal{E}|$ is the number of edges in the graph.
+It is an extension of `Lab-6d` in which we introduce node capacity constraints. The [Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) is a graph search algorithm that can search graphs with negative edge weights. However, it is slower than Dijkstra's algorithm. Bellman-Ford has a time complexity of $\mathcal{O}(|\mathcal{V}|\cdot|\mathcal{E}|)$, where $|\mathcal{V}|$ is the number of vertices and $|\mathcal{E}|$ is the number of edges in the graph.
 
 ## Problem: Update your Bellman-Ford to consider Node Capacities
-Update [your initial Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) from `Lab-6d` to find the shortest path from a single source vertex to all other vertices in a weighted graph where we consider node capacities.
+Updated [your initial Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) from `Lab-6d` to find the shortest path from a single source vertex to all other vertices in a weighted graph where we consider node capacities.
 
 <div>
     <center>
@@ -13,29 +13,54 @@ Update [your initial Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellm
 
 Imagine you (node `1`) are in charge of allocating workers to tasks, i.e., faculty to courses. You have a list of faculty and a list of courses. While each faculty member can teach any course, they have a preference for each course reflected in the edge weight connecting faculty to classes. 
 * The weight of the edge connecting faculty `i` to course `j` is the cost of assigning faculty `i` to course `j.` If $w_{ij} < 0$, it means that faculty `i` prefers course `j`. If $w_{ij} > 0$, it means that faculty `i` dislikes course `j`. If $w_{ij} = 0$, it means that faculty `i` is indifferent to course `j.`
-* __What are node capacities__?: Each faculty member can be assigned from `0` upto a maximum of `N` courses. This value is specified in the `data/Bipartite.nodecapacity` file. Thus, if `N = 1`, then the faculty member can at most be assigned `1` course.
+* __What are node capacities__?: Each faculty member can be assigned from `0` upto a maximum of `N` courses. We capture this idea
+by introducing constraints on the in-degree and out-degree of each of the nodes in the bipartite graph. These values are stored in the `data/Bipartite.nodecapacity` file.
 
 ### Tasks
 1. Implement the `readnodecapacityfile(filepath::String; comment::Char='#', 
     delim::Char=',')::Dict{Int64, Tuple{Int64, Int64}}` function to read the node capacities from the file. This method is in the `src/Files.jl` file.
-2. `Update` the `_search(graph::T, start::MyGraphNodeModel, algorithm::BellmanFordAlgorithm)` method in the `src/Search.jl` file to consider node capacities.
+2. `Implement` the `_search(graph::T, start::MyGraphNodeModel, algorithm::ModifiedBellmanFordAlgorithm)` method in the `src/Search.jl` file to consider node capacities. This method is similar of the `_search(graph::T, start::MyGraphNodeModel, algorithm::BellmanFordAlgorithm)` method, but it takes the `ModifiedBellmanFordAlgorithm` as an argument, and should produce output that respects the capacities.
 
+#### Helpful Stuff (maybe)
+We've updated the `MySimpleDirectedGraphModel` type to include an additional field `A::Array{Float64,2}` which is an $|\mathcal{V}|\times|\mathcal{E}|$ array holding connectivity of the graph, where:
 
-## Test your Bellman-Ford with Node Capacities
-In this task, we'll test your implementation of [the Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) using a test case that is similar to problem set 3 (PS3).
+* If $a_{ij} = 0$, node `i` is not connected to edge `j`.
+* If $a_{ij} = 1$, node `i` is connected to edge `j`, the edge `j` is an incoming edge for node `i`.
+* If $a_{ij} = -1$, node `i` is connected to edge `j`, the edge `j` is an outgoing edge for node `i`.
 
+In addition, we've added the `capacity::Union{Nothing, Tuple{Int64, Int64}}` field to the `MyGraphNodeModel` type to store the node capacities. The first element of the tuple is the in-degree capacity, and the second element is the out-degree capacity.
 
+## Test your modified Bellman-Ford implementation
+In this task, we'll test your modified implementation of [the Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) using the bipartite graph in the `data/Bipartite.edgelist` file. 
 
-
-
-We want to assign faculty members to courses in a way that minimizes the cost of the assignment. Later, we'll solve this problem using [Linear Programming](https://en.wikipedia.org/wiki/Linear_programming). However, let's try to solve this problem using [the Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) and see what happens.
-
-Let's specify different weights for the edges connecting faculty to courses, solve the problem, and look at the solution. The graph and weights are specified in the `data/Bipartite.edgelist` file. The file has the following format:
-* Each record has the fields: `source,` `target,` `cost,` `lb capacity,` `ub capacity`
-
-Execute the `runme_balanced_bellmanford.jl` script to solve the problem and visualize the results:
+### Incorrect assignment (original Bellman-Ford)
+If you execute the `runme_balanced_bellmanford.jl` script (which executes the original Bellman-Ford implementation):
 
 ```julia
 include("runme_balanced_bellmanford.jl")
 ```
 
+you should see the following (incorrect) output (stored in the `results` folder):
+
+<div>
+    <center>
+        <img src="results/Fig-capacity-violation.svg" width="480"/>
+    </center>
+</div>
+
+This output is incorrect because the solution violates the node capacity constraints.
+
+### Correct assignment (modified Bellman-Ford)
+However, if you implement the `readnodecapacityfile` and `_search` methods correctly, you should see (something like) the following (correct) output (stored in the `results` folder) following the execution of the `runme_balanced_mod_bellmanford.jl` script:
+
+```julia
+include("runme_balanced_mod_bellmanford.jl")
+```
+
+<div>
+    <center>
+        <img src="results/Fig-capacity-mod-correct.svg" width="480"/>
+    </center>
+</div>
+
+In this case (given the same input) the assigments produced by the modified algorithm respects the node capacity constraints.
