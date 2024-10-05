@@ -111,8 +111,33 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::BellmanFordAlgori
     return distances, previous;
 end
 
+"""
+    function _search(graph::T, start::MyGraphNodeModel, algorithm::ModifiedBellmanFordAlgorithm) where T <: MyAbstractGraphModel
+
+This function performs a single source shortest path calculation on a graph model using the Modified Bellman Ford algorithm.
+This version of Bellman-Ford should respect node capacities
+
+### Arguments
+- `graph::T`: the graph model to search. This is a subtype of `MyAbstractGraphModel`.
+- `start::MyGraphNodeModel`: the node to start the search from.
+- `algorithm::ModifiedBellmanFordAlgorithm`: the algorithm to use for the search {DikjstraAlgorithm | BellmanFordAlgorithm | ModifiedBellmanFordAlgorithm}.
+
+### Returns
+- a tuple of two dictionaries: the first dictionary contains the distances from the starting node to all other nodes, and the second dictionary contains the previous node in the shortest path from the starting node to all other nodes.
+"""
 function _search(graph::T, start::MyGraphNodeModel, algorithm::ModifiedBellmanFordAlgorithm) where T <: MyAbstractGraphModel
+    
+    # initialize -
+    distances = Dict{Int64, Float64}();
+    previous = Dict{Int64, Union{Nothing,Int64}}();
+    nodes = graph.nodes;
+    number_of_nodes = length(nodes);
+    
+    # TODO: implement this function
     throw("ModifiedBellmanFordAlgorithm not implemented");
+
+    # return -
+    return distances, previous;
 end
 
 

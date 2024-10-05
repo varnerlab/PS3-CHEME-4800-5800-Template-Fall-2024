@@ -62,7 +62,21 @@ function weight(graph::T, source::Int64, target::Int64)::Float64 where T <: MyAb
     return graph.edges[(source, target)][1];
 end
 
-function flow(graph::T, distances::Dict{Int64, Float64}, previous::Dict{Int64, Union{Nothing,Int64}})::Array{Float64,1} where T <: MyAbstractGraphModel
+"""
+    function flow(graph::T, distances::Dict{Int64, Float64}, previous::Dict{Int64, Union{Nothing,Int64}}) -> Array{Float64,1} where T <: MyAbstractGraphModel
+
+The flow function computes the flow vector, i.e., the amount of flow in each edge in the graph from the distances and previous node dictionaries.
+
+### Arguments
+- `graph::T`: the graph model to search. This is a subtype of `MyAbstractGraphModel`.
+- `distances::Dict{Int64, Float64}`: the distances dictionary from the search algorithm.
+- `previous::Dict{Int64, Union{Nothing,Int64}}`: the previous node dictionary from the search algorithm.
+
+### Returns
+- an array of flow values for each edge in the graph.
+"""
+function flow(graph::T, distances::Dict{Int64, Float64}, 
+    previous::Dict{Int64, Union{Nothing,Int64}})::Array{Float64,1} where T <: MyAbstractGraphModel
     
     # initialize -
     number_of_nodes = length(graph.nodes);
